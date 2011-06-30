@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/screen.css" type="text/css" media="all" />
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+    <script>
+
+    var backoff = 0;
+
+    connect_ws();
+
+    // Connects to websocket, includes very basic reconnect logic with backoff increase
+    function connect_ws() {
+        try {
+            var websocket = new WebSocket("ws://localhost:8000");
+
+            websocket.onclose = function(evt) {
+//                console.log("Connection closed");
+                backoff += 1;
+//                console.log("Attempting to reconnect in " + backoff + " seconds");
+                setTimeout(connect_ws, backoff*1000);
+            };
+
+            websocket.onopen = function(evt) {
+//                console.log("Connected");
+                if (backoff > 0) {
+                    console.log("Resetting backoff timer");
+                    backoff = 0;
+                }
+            };
+            
+            websocket.onmessage = function(evt) {
+                message = JSON.parse(evt.data);
+                memory_meter = $("ul li#" + message.name + " dl.breakdown dd:eq(0) meter");
+                if (message.memory !== 'undefined') {
+                    memory_meter.val(message.memory.used);
+                    memory_meter.attr('max', message.memory.total);
+                    memory_meter.attr('low', message.memory.low);
+                    memory_meter.attr('high', message.memory.high);
+            
+                    $("ul li#" + message.name + " dl.breakdown dd:eq(0) span").html(message.memory.used + '/' + message.memory.total + ' MB');
+            
+                }
+        
+                $("ul li#" + message.name + " dl.overview dd:eq(0)").html(message.load);
+        
+                // This is wrong, load status changes should be these values * X logical CPUs, easy enough to poll for
+                if (message.load >= 1) {
+                    $("ul li#" + message.name).removeClass().addClass('error');
+                } else if (message.load >= 0.75) {
+                    $("ul li#" + message.name).removeClass().addClass('warning');
+                } else {
+                    $("ul li#" + message.name).removeClass().addClass('fine');
+                }
+
+                cpu_meter = $("ul li#" + message.name + " dl.breakdown dd:eq(1) meter");
+                cpu_meter.val(message.cpu_use);
+                $("ul li#" + message.name + " dl.breakdown dd:eq(1) span").html(message.cpu_use);
+
+            };
+       
+        } catch (err) {
+//            console.log(err);
+            backoff += 1;
+//            console.log("Attempting to reconnect in " + backoff + " seconds");
+            setTimeout(connect_ws, backoff*1000);
+        }
+    }
+    </script>
+    
+</head>
+
+<body>
+    
+    
+    <ul>
+
+        <!-- This should really all be dynamic and new servers pushed down -->
+        <% for(var i=0; i<servers.length; i++) {%>
+        <li id="<%= servers[i] %>">
+            <h1><%= servers[i] %></h1>
+            
+            <dl class="overview">
+                <dt>Load avg:</dt>
+                <dd>&dash;.&dash;&dash;</dd>
+            </dl>
+            
+            <dl class="breakdown">
+                <dt>RAM usage:</dt>
+                <dd>
+                    <span>&mdash;</span>
+                    <meter min="0" max="2000" optimum="0" low="600" high="1200"></meter>
+                </dd>
+                <dt>CPU usage:</dt>
+                <dd>
+                    <span>&mdash;</span>
+                    <meter min="0" max="100" low="30" high="60" optimum="0"></meter>
+                </dd>
+                <!-- This hasn't been added, yet -->
+                <dt>Network usage:</dt>
+                <dd>
+                    <span>&mdash;</span>
+                    <meter min="0" max="100" low="30" high="60" optimum="0"></meter>
+                </dd>
+            </dl>
+            
+        </li>
+        <% } %>
+        
+    </ul>
+
+</body>
+
+</html>

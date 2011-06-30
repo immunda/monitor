@@ -1,0 +1,127 @@
+@import url(reset.css);
+
+body {
+	background-color: #2C2D2D;
+	margin: 0 auto;
+/*	font: 15px/1 "Din Next Rounded LT Pro", "Helvetica Neue", sans-serif; */
+	font: 15px/1 "Helvetica Neue", sans-serif;
+}
+
+ul li {
+    background: #666;
+	color: #FFF;
+	-webkit-border-radius: 2px;
+	width: 15.5%;
+	float: left;
+	margin-left: 0.5%;
+	margin-top: 0.25%;
+	margin-bottom: 0.25%;
+	padding: 2%;
+}
+ul li.fine {
+	background: #92B302;
+}
+ul li.warning {
+	background: #E09B00;
+}
+ul li.error {
+	background: #E61A23;
+}
+
+h1 {
+	font-weight: normal;
+	text-transform: capitalize;
+	font-size: 40px;
+	margin-bottom: 15px;
+}
+
+dl.overview dd {
+	font-size: 100px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 10px;
+	letter-spacing: -5px;
+}
+
+dl.breakdown {
+	text-align: left;
+	margin-bottom: -15px;
+}
+
+dl.breakdown dt {
+	display: inline;
+}
+
+dl.breakdown dd {
+	display: inline;
+	font-weight: bold;
+}
+
+meter {
+	-webkit-appearance: none;
+	width: 100%;
+	margin-right: 0.5em;
+	display: block;
+	height: 35px;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: #92B302;
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: #E09B00;
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #e61a23;
+}
+
+meter::-webkit-meter-bar {
+	background: rgba(255,254,254,0.75);
+	border: 2px solid rgba(255,254,254,0.2);
+	-webkit-border-radius: 2px;
+}
+
+@media screen and (max-width: 1100px) {
+
+	ul li {
+		width: 20.5%;
+	}
+
+}
+
+@media screen and (max-width: 800px) {
+
+	ul li {
+		width: 28.9%;
+	}
+
+}
+
+@media screen and (max-width: 600px) {
+
+	h1 {
+		font-size: 25px;
+	}
+	
+	dl.overview dd {
+		font-size: 80px;
+		letter-spacing: -2px;
+	}
+
+}
+
+@media screen and (max-width: 500px) {
+
+	ul li { 
+		width: 45%;
+		margin-left: 1%;
+		margin-top: 0.5%;
+		margin-bottom: 0.5%;
+	}
+	
+
+}
