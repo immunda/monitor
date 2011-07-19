@@ -15,7 +15,7 @@
     // Connects to websocket, includes very basic reconnect logic with backoff increase
     function connect_ws() {
         try {
-            var websocket = new WebSocket("ws://localhost:8000");
+            var websocket = new WebSocket("ws://<%= websocket_host %>:8000");
 
             websocket.onclose = function(evt) {
 //                console.log("Connection closed");
@@ -58,7 +58,7 @@
 
                 cpu_meter = $("ul li#" + message.name + " dl.breakdown dd:eq(1) meter");
                 cpu_meter.val(message.cpu_use);
-                $("ul li#" + message.name + " dl.breakdown dd:eq(1) span").html(message.cpu_use);
+                $("ul li#" + message.name + " dl.breakdown dd:eq(1) span").html(message.cpu_use + '%');
 
             };
        
