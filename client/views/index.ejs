@@ -15,17 +15,17 @@
     // Connects to websocket, includes very basic reconnect logic with backoff increase
     function connect_ws() {
         try {
-            var websocket = new WebSocket("ws://<%= websocket_host %>:8000");
+            var websocket = new WebSocket("ws://<%= websocket_host %>:8999");
 
             websocket.onclose = function(evt) {
-//                console.log("Connection closed");
+                console.log("Connection closed");
                 backoff += 1;
 //                console.log("Attempting to reconnect in " + backoff + " seconds");
                 setTimeout(connect_ws, backoff*1000);
             };
 
             websocket.onopen = function(evt) {
-//                console.log("Connected");
+                // console.log("Connected");
                 if (backoff > 0) {
                     console.log("Resetting backoff timer");
                     backoff = 0;
@@ -63,7 +63,7 @@
             };
        
         } catch (err) {
-//            console.log(err);
+            console.log(err);
             backoff += 1;
 //            console.log("Attempting to reconnect in " + backoff + " seconds");
             setTimeout(connect_ws, backoff*1000);
