@@ -9,15 +9,9 @@ There's a load things to add/fix, but it's worked well in helping quickly spot l
 
 ### Dependencies
 
-* A RabbitMQ (or maybe other AMQP) server
+* RabbitMQ server
 
-* The following node.js libraries:
-    * amqp
-    * express
-    * ejs
-    * websocket-server
-    
-* A browser with <meter> tag support; basically Webkit nightly or Chrome (it's not made it into Safari yet)
+* node.js / npm
     
 * The following Python libraries:
     * pika
